@@ -10,13 +10,25 @@ const Tareas = ({tarea}) => {
 
     //context tarea
     const tareasContext = useContext(TareaContext)
-    const {deleteTarea,obtenerTareas} = tareasContext
+    const {deleteTarea,obtenerTareas,guardarActualizarTarea,editarTarea} = tareasContext
+
+    const [poryectoActual] = proyecto
 
     const deletee = id => {
-        deleteTarea(id)
-        console.log('hola')
+        deleteTarea(id, poryectoActual._id)
 
-        obtenerTareas(proyecto[0].id)
+        obtenerTareas(poryectoActual.id)
+    }
+    const estadoTarea = tarea =>{
+        if(tarea.estado){
+            tarea.estado = false
+        }else{
+            tarea.estado = true
+        }
+        guardarActualizarTarea(tarea)
+    }
+    const selecionarTarea = tarea =>{
+        editarTarea(tarea)
     }
 
     return ( 
@@ -27,10 +39,12 @@ const Tareas = ({tarea}) => {
                 ?   <button
                         type='button'
                         className="completo"
+                        onClick={()=> estadoTarea(tarea)}
                     >Completo</button>
                 :  <button
                         type='button'
                         className="incompleto"
+                        onClick={()=> estadoTarea(tarea)}
                     >Incompleto</button>
                 }
             </div>
@@ -39,11 +53,12 @@ const Tareas = ({tarea}) => {
                 <button
                     type="button"
                     className="btn btn-primario"
+                    onClick={()=> selecionarTarea(tarea)}
                 >Editar</button>
                 <button
                     type="button"
                     className="btn btn-secundario"
-                    onClick={()=> deletee(tarea.id)}
+                    onClick={()=> deletee(tarea._id)}
                 >Eliminar</button>
             </div>
         </li>

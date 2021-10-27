@@ -1,5 +1,6 @@
 import React from 'react';
 import { Fragment, useContext} from 'react/cjs/react.development';
+
 import Tareas from './Tareas'
 
 import proyectoContext from '../../context/project/proyectoContext';
@@ -22,7 +23,7 @@ const ListadoTareas = () => {
 
 
     const onClickEliminar = ()=>{
-        eliminarProyecto(proyectoActual.id)
+        eliminarProyecto(proyectoActual._id)
     }
 
     return ( 
@@ -31,12 +32,12 @@ const ListadoTareas = () => {
             <ul className="listado-tareas">
                 {tareasproyecto.length === 0 
                     ? <li className="tarea"><p>No hay tareas</p></li>
-                    :tareasproyecto.map((tarea)=>(
+                    : (tareasproyecto.map((tarea)=>(
                         <Tareas
-                            key={tarea.id}
+                            key={tarea._id}
                             tarea={tarea}
                         />
-                     ))
+                    )))   
                 }
             </ul>
             <button

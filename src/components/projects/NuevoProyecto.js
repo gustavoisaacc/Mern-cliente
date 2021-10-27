@@ -18,7 +18,6 @@ const NuevoProyecto = () => {
             ...proyecto,
             [e.target.name]: e.target.value,
         })
-        console.log('hola')
     }
 
     const onSubmitProyecto = e=>{

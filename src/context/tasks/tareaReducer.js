@@ -2,7 +2,9 @@ import {
     TAREAS_PROYECTOS,
     AGREGAR_TAREAS,
     VALIDAR_TAREA,
-    ELIMINAR_TAREA
+    ELIMINAR_TAREA,
+    TAREA_ACTUAL,
+    ACTUALIZAR_TAREA
 } from '../../types'
 
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -11,12 +13,12 @@ export default (state, action) => {
         case TAREAS_PROYECTOS: 
             return {
                 ...state,
-                tareasproyecto: state.tareas.filter(tarea => tarea.proyectoId === action.payloat),
+                tareasproyecto: action.payload
             }
         case AGREGAR_TAREAS:
             return{
                 ...state,
-                tareas: [...state.tareas, action.payloat],
+                tareasproyecto: [action.payload, ...state.tareasproyecto],
                 errortarea: false
             }
         case VALIDAR_TAREA:
@@ -27,7 +29,18 @@ export default (state, action) => {
         case ELIMINAR_TAREA:
             return{
                 ...state,
-                tareas: state.tareas.filter(tarea => tarea.id !== action.payload)
+                tareasproyecto: state.tareasproyecto.filter(tarea => tarea._id !== action.payload)
+            }
+        case ACTUALIZAR_TAREA:
+            return{
+                ...state,
+                tareasproyecto: state.tareasproyecto.map(tarea => tarea._id === action.payload._id ? action.payload : tarea ),
+                tareaseleccionada: null
+            }
+        case TAREA_ACTUAL:
+            return{
+                ...state,
+                tareaseleccionada: action.payload
             }
             default:
                 return state;

@@ -7,25 +7,18 @@ import {
     TAREAS_PROYECTOS,
     AGREGAR_TAREAS,
     VALIDAR_TAREA,
-    ELIMINAR_TAREA
+    ELIMINAR_TAREA,
+    TAREA_ACTUAL,
+    ACTUALIZAR_TAREA
 } from '../../types'
+
+import clienteAxios from '../../config/axios';
 
 const TareaState = (props)=> {
     const initialState = {
-        tareas: [
-            {id: 1, nombre: 'elegir color', estado: false, proyectoId: 2},
-            {id: 2, nombre: 'elegir hosting', estado: false, proyectoId: 3},
-            {id: 3, nombre: 'elegir platafoma de pago', estado: true, proyectoId: 4},
-            {id: 4, nombre: 'elegir platafoma', estado: true, proyectoId: 1},
-            {id: 5, nombre: 'elegir color', estado: false, proyectoId: 2},
-            {id: 6, nombre: 'elegir hosting', estado: false, proyectoId: 3},
-            {id: 7, nombre: 'elegir platafoma', estado: true, proyectoId: 1},
-            {id: 8, nombre: 'elegir platafoma', estado: true, proyectoId: 4},
-            {id: 9, nombre: 'elegir color', estado: false, proyectoId: 2},
-            {id: 10, nombre: 'elegir hosting', estado: false, proyectoId: 3},
-        ],
-        tareasproyecto: null,
-        errortarea: false
+        tareasproyecto: [],
+        errortarea: false,
+        tareaseleccionada: null
     }
 
     //creamos state action
@@ -35,19 +28,31 @@ const TareaState = (props)=> {
      
 
     //obtener las tareas de un proyecto
-    const obtenerTareas = proyectoId => {
+    const obtenerTareas = async proyecto => {
+       try {
+        const resultado = await clienteAxios.get('/api/tareas', { params: { proyecto }});
+        console.log(resultado);
         dispatch({
             type: TAREAS_PROYECTOS,
-            payloat: proyectoId
-
+            payload: resultado.data.tareas
         })
+       } catch (error) {
+           console.log(error)
+       }
     }
 
-    const agregarTarea = (tarea)=>{
-        dispatch({
-            type: AGREGAR_TAREAS,
-            payloat: tarea,
-        })
+    const agregarTarea = async (tarea) =>{
+        try {
+            const respuesta = await clienteAxios.post('/api/tareas', tarea);
+            console.log(respuesta)
+
+            dispatch({
+                type: AGREGAR_TAREAS,
+                payload: tarea
+            })
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     const validarTarea = ()=>{
@@ -56,23 +61,50 @@ const TareaState = (props)=> {
 
         })
     }
-    const deleteTarea = id =>{
+    const deleteTarea = async (id, proyecto) =>{
+       
+        try {
+            await clienteAxios.delete(`/api/tareas/${id}`, {params: { proyecto }})
+            dispatch({
+                type: ELIMINAR_TAREA,
+                payload: id
+            })
+        } catch (error) {
+           console.log(error)
+        }
+    }
+    const guardarActualizarTarea = async tarea =>{
+        try {
+            const resultado = await clienteAxios.put(`/api/tareas/${tarea._id}`, tarea);
+            
+            dispatch({
+                type: ACTUALIZAR_TAREA,
+                payload: resultado.data.tarea
+            })
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    const editarTarea = tarea =>{
         dispatch({
-            type: ELIMINAR_TAREA,
-            payload: id
+            type: TAREA_ACTUAL,
+            payload: tarea
         })
     }
+   
 
     return(
         <TareaContext.Provider
             value={{
-                tareas: state.tareas,
                 tareasproyecto: state.tareasproyecto,
                 errortarea: state.errortarea,
+                tareaseleccionada: state.tareaseleccionada,
                 obtenerTareas,
                 agregarTarea,
                 validarTarea,
-                deleteTarea
+                deleteTarea,
+                editarTarea,
+                guardarActualizarTarea
             }}
         >
             {props.children}

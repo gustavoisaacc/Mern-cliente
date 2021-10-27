@@ -7,18 +7,33 @@ import Proyectos from './components/projects/Proyectos';
  
 import ProyectoState from './context/project/proyectoState';
 import TareaState from './context/tasks/tareaState';
+import AlertaState from './context/alerts/alertsState';
+import AuthState from './context/autenticacion/authState';
+import RutaPrivada from './components/rutas/RutaPrivada'
+
+import tokenAuth from './config/token';
+
+const token = localStorage.getItem('token')
+if(token){
+  tokenAuth(token)
+}
 
 function App() {
+
   return (
   <ProyectoState>
     <TareaState>
-      <Router>
-          <Switch>
-            <Route exact path="/" component={Login}/>
-            <Route exact path="/nueva-cuenta" component={NuevaCuenta}/>
-            <Route exact path="/proyectos" component={Proyectos}/>
-          </Switch>
-      </Router>
+      <AlertaState>
+        <AuthState>
+          <Router>
+              <Switch>
+                <Route exact path="/" component={Login}/>
+                <Route exact path="/nueva-cuenta" component={NuevaCuenta}/>
+                <RutaPrivada exact path="/proyectos" component={Proyectos}/>
+              </Switch>
+          </Router>
+        </AuthState>
+      </AlertaState>
     </TareaState>
    </ProyectoState>
   );
