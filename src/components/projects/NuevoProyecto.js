@@ -1,15 +1,15 @@
 import React from 'react';
 import { Fragment, useState,useContext } from 'react/cjs/react.development';
 
-import proyectoContext from '../../context/project/proyectoContext'; 
+import ProyectoContext from '../../context/project/proyectoContext'; 
 
 const NuevoProyecto = () => {
-    const proyectosContext = useContext(proyectoContext)
+    const proyectosContext = useContext(ProyectoContext);
     const {formulario,errorformulario,mostrarFormulario, agregarProyecto,mensajeError} = proyectosContext;
 
     const [proyecto, guardarProyecto] = useState({
         nombre:''
-    })
+    });
     
     const {nombre} = proyecto;
 
@@ -17,11 +17,11 @@ const NuevoProyecto = () => {
         guardarProyecto({
             ...proyecto,
             [e.target.name]: e.target.value,
-        })
+        });
     }
 
     const onSubmitProyecto = e=>{
-        e.preventDefault()
+        e.preventDefault();
 
         //validar el proyecto
         if(nombre === '') {
@@ -30,12 +30,12 @@ const NuevoProyecto = () => {
         }
 
         //agregar al state
-        agregarProyecto(proyecto)
+        agregarProyecto(proyecto);
 
         //Reiniciar el formulario
         guardarProyecto({
             nombre: ''
-        })
+        });
     }
 
     return ( 
