@@ -1,5 +1,4 @@
-import React from 'react';
-import { Fragment, useContext} from 'react/cjs/react.development';
+import React, { Fragment, useContext} from 'react';
 
 import Tareas from './Tareas'
 
@@ -8,8 +7,7 @@ import TareaContext from '../../context/tasks/tareaContext';
 
 const ListadoTareas = () => {
     //extraer proyectodel state inicial
-    const proyectosContext = useContext(ProyectoContext);
-    const {proyecto,eliminarProyecto} = proyectosContext;
+    const {proyecto,eliminarProyecto} = useContext(ProyectoContext);
 
     //obtenemos las tareas
     const tareasContext = useContext(TareaContext);

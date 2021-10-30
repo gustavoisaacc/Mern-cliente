@@ -1,12 +1,11 @@
-import React from 'react';
-import { Fragment, useState,useContext } from 'react/cjs/react.development';
+import React, { Fragment, useState,useContext } from 'react';
 
 import ProyectoContext from '../../context/project/proyectoContext'; 
 
 const NuevoProyecto = () => {
-    const proyectosContext = useContext(ProyectoContext);
-    const {formulario,errorformulario,mostrarFormulario, agregarProyecto,mensajeError} = proyectosContext;
-
+    const proyectoContext = useContext(ProyectoContext);
+    const {formulario,errorformulario,mostrarFormulario, agregarProyecto,mensajeError} = proyectoContext
+    
     const [proyecto, guardarProyecto] = useState({
         nombre:''
     });
